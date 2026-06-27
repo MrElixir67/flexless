@@ -1,0 +1,177 @@
+"use client"
+
+import { use, useState, useEffect } from "react"
+import Link from "next/link"
+import { useTranslations } from "next-intl"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { StarRating } from "@/components/ui/StarRating"
+import { formatPrice } from "@/lib/utils"
+import { getProductBySlug, getProductReviews, type ApiProduct, type ApiReview } from "@/lib/api"
+import { ShoppingBag, ChevronLeft, Minus, Plus, Shield, Truck, Leaf, Star, SprayCan } from "lucide-react"
+
+export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
+  const [product, setProduct] = useState<ApiProduct | null>(null)
+  const [reviews, setReviews] = useState<ApiReview[]>([])
+  const [loading, setLoading] = useState(true)
+  const [quantity, setQuantity] = useState(1)
+  const [selectedImage, setSelectedImage] = useState(0)
+
+  const t = useTranslations("product")
+  const tc = useTranslations("common")
+
+  useEffect(() => {
+    getProductBySlug(slug).then((data) => {
+      setProduct(data)
+      if (data) {
+        getProductReviews(data.id).then(setReviews)
+      }
+      setLoading(false)
+    }).catch(() => setLoading(false))
+  }, [slug])
+
+  if (loading) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-20 text-center">
+        <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-secondary border-t-transparent" />
+      </div>
+    )
+  }
+
+  if (!product) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 py-20 text-center">
+        <h1 className="text-2xl font-bold text-text-primary">{t("notFound")}</h1>
+        <p className="mt-2 text-text-muted">{t("notFoundDesc")}</p>
+        <Link href="/products" className="mt-6 inline-block">
+          <Button variant="outline">{tc("backToProducts")}</Button>
+        </Link>
+      </div>
+    )
+  }
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <Link href="/products" className="mb-6 inline-flex items-center gap-1 text-sm text-text-muted hover:text-text-primary">
+        <ChevronLeft className="h-4 w-4" /> {tc("backToProducts")}
+      </Link>
+
+      <div className="grid gap-8 lg:grid-cols-2">
+        <div className="space-y-4">
+          <div className="aspect-square rounded-2xl bg-gradient-to-br from-primary-light to-[#3d3d3d] p-12">
+            <div className="flex h-full items-center justify-center">
+              <div className="text-center">
+                <div className="mx-auto mb-4 flex h-40 w-40 items-center justify-center rounded-full bg-secondary/20">
+                  <SprayCan className="h-20 w-20 text-secondary" />
+                </div>
+                <p className="text-sm text-text-muted">{product.category}</p>
+              </div>
+            </div>
+          </div>
+          <div className="flex gap-3">
+            {[0, 1, 2].map((i) => (
+              <button
+                key={i}
+                onClick={() => setSelectedImage(i)}
+                className={`h-16 w-16 rounded-lg border-2 ${
+                  i === selectedImage ? "border-secondary" : "border-border-dark"
+                } bg-primary-light transition-colors hover:border-secondary/50`}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Badge variant="default">Best Seller</Badge>
+            </div>
+            <h1 className="text-3xl font-bold text-text-primary">{product.name}</h1>
+            <StarRating rating={product.rating} size="md" showCount count={product.sold_count} />
+          </div>
+
+          <div className="flex items-baseline gap-3">
+            <span className="text-3xl font-bold text-secondary">{formatPrice(product.price)}</span>
+          </div>
+
+          <p className="leading-relaxed text-text-muted">{product.description}</p>
+
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <span className="text-sm font-medium text-text-primary">{tc("quantity")}</span>
+              <div className="flex items-center gap-1">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-dark bg-primary-light text-text-primary hover:bg-[#3d3d3d]"
+                >
+                  <Minus className="h-4 w-4" />
+                </button>
+                <span className="flex h-9 w-12 items-center justify-center text-sm font-medium text-text-primary">
+                  {quantity}
+                </span>
+                <button
+                  onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                  className="flex h-9 w-9 items-center justify-center rounded-lg border border-border-dark bg-primary-light text-text-primary hover:bg-[#3d3d3d]"
+                >
+                  <Plus className="h-4 w-4" />
+                </button>
+              </div>
+              <span className="text-xs text-text-muted">
+                {product.stock > 0 ? t("inStock", { count: product.stock }) : tc("outOfStock")}
+              </span>
+            </div>
+
+            <Button className="w-full gap-2" size="lg">
+              <ShoppingBag className="h-5 w-5" /> {tc("addToCart")}
+            </Button>
+          </div>
+
+          <div className="border-t border-border-dark pt-6">
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: Leaf, text: t("naturalIngredients") },
+                { icon: Shield, text: t("safeOnAllMaterials") },
+                { icon: Truck, text: t("freeShippingOver") },
+                { icon: Star, text: t("baliMadePremium") },
+              ].map((item) => (
+                <div key={item.text} className="flex items-center gap-2">
+                  <item.icon className="h-4 w-4 text-secondary" />
+                  <span className="text-xs text-text-muted">{item.text}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section className="mt-16 border-t border-border-dark pt-12">
+        <h2 className="mb-6 text-2xl font-bold text-text-primary">
+          {t("reviewsFromShopee")}
+          <span className="ml-2 rounded bg-secondary/20 px-2 py-0.5 text-xs font-medium text-secondary">Sync</span>
+        </h2>
+        {reviews.length === 0 ? (
+          <p className="text-sm text-text-muted">{t("noReviews")}</p>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {reviews.map((review) => (
+              <div key={review.id} className="rounded-xl bg-primary-light p-5">
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary/20 text-xs font-medium text-secondary">
+                    {review.author_name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-text-primary">{review.author_name}</p>
+                    <p className="text-xs text-text-muted">{new Date(review.created_at).toLocaleDateString("id-ID")}</p>
+                  </div>
+                </div>
+                <StarRating rating={review.rating} />
+                <p className="mt-2 text-sm leading-relaxed text-text-muted">{review.comment}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
+    </div>
+  )
+}
