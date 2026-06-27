@@ -5,6 +5,9 @@ import { Navbar } from "@/components/layout/Navbar"
 import { Footer } from "@/components/layout/Footer"
 import { getMessages, getLocale } from "next-intl/server"
 import { LocaleProvider } from "@/components/providers/locale-provider"
+import { cookies } from "next/headers"
+
+export const dynamic = "force-dynamic"
 
 const inter = Inter({
   subsets: ["latin"],

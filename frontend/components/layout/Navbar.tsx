@@ -1,8 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useLocale, useTranslations } from "next-intl"
 import { Menu, Search, ShoppingBag, X } from "lucide-react"
 
@@ -15,14 +14,21 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mounted, setMounted] = useState(false)
   const locale = useLocale()
   const t = useTranslations("nav")
-  const router = useRouter()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const switchLocale = (newLocale: string) => {
-    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000`
-    router.refresh()
+    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000;SameSite=Lax`
+    window.location.href = window.location.pathname
   }
+
+  const isEn = mounted && locale === "en"
+  const isId = mounted && locale === "id"
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-dark bg-primary">
@@ -49,20 +55,22 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <button
             type="button"
-            onClick={() => switchLocale(locale === "id" ? "en" : "id")}
-            className="relative hidden sm:block h-7 w-[60px] rounded-md border border-border-dark bg-primary-light overflow-hidden"
+            onClick={() => switchLocale(isId ? "en" : "id")}
+            className="relative hidden sm:flex h-7 w-[60px] rounded-md border border-border-dark bg-primary-light overflow-hidden cursor-pointer"
+            suppressHydrationWarning
           >
             <span
               aria-hidden
+              suppressHydrationWarning
               className={`pointer-events-none absolute top-0.5 h-[24px] w-[27px] rounded bg-secondary border border-secondary/30 transition-all duration-200 ease-out ${
-                locale === "en" ? "left-[calc(50%+1px)]" : "left-0.5"
+                isEn ? "left-[calc(50%+1px)]" : "left-0.5"
               }`}
             />
             <span aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-between px-[10px] z-10">
-              <span className={`pointer-events-none text-[11px] font-semibold ${locale === "id" ? "text-primary" : "text-text-muted"}`}>
+              <span suppressHydrationWarning className={`pointer-events-none text-xs font-semibold ${isId ? "text-primary" : "text-text-muted"}`}>
                 ID
               </span>
-              <span className={`pointer-events-none text-[11px] font-semibold ${locale === "en" ? "text-primary" : "text-text-muted"}`}>
+              <span suppressHydrationWarning className={`pointer-events-none text-xs font-semibold ${isEn ? "text-primary" : "text-text-muted"}`}>
                 EN
               </span>
             </span>
