@@ -15,6 +15,7 @@ const navLinks = [
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [animatingLocale, setAnimatingLocale] = useState<string | null>(null)
   const locale = useLocale()
   const t = useTranslations("nav")
 
@@ -22,13 +23,19 @@ export function Navbar() {
     setMounted(true)
   }, [])
 
+  const displayLocale = animatingLocale ?? locale
+
   const switchLocale = (newLocale: string) => {
+    if (animatingLocale) return
+    setAnimatingLocale(newLocale)
     document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000;SameSite=Lax`
-    window.location.href = window.location.pathname
+    setTimeout(() => {
+      window.location.href = window.location.pathname
+    }, 300)
   }
 
-  const isEn = mounted && locale === "en"
-  const isId = mounted && locale === "id"
+  const isEn = mounted && displayLocale === "en"
+  const isId = mounted && displayLocale === "id"
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-dark bg-primary">
@@ -56,13 +63,14 @@ export function Navbar() {
           <button
             type="button"
             onClick={() => switchLocale(isId ? "en" : "id")}
+            disabled={!!animatingLocale}
             className="relative hidden sm:flex h-7 w-[60px] rounded-md border border-border-dark bg-primary-light overflow-hidden cursor-pointer"
             suppressHydrationWarning
           >
             <span
               aria-hidden
               suppressHydrationWarning
-              className={`pointer-events-none absolute top-0.5 h-[24px] w-[27px] rounded bg-secondary border border-secondary/30 transition-all duration-200 ease-out ${
+              className={`pointer-events-none absolute top-0.5 h-[24px] w-[27px] rounded bg-secondary border border-secondary/30 transition-all duration-300 ease-out ${
                 isEn ? "left-[calc(50%+1px)]" : "left-0.5"
               }`}
             />
