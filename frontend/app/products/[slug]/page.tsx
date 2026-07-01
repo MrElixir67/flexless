@@ -7,8 +7,57 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { StarRating } from "@/components/ui/StarRating"
 import { formatPrice } from "@/lib/utils"
-import { getProductBySlug, getProductReviews, type ApiProduct, type ApiReview } from "@/lib/api"
+import { getProductBySlug as getApiProductBySlug, getProductReviews as getApiProductReviews, type ApiProduct, type ApiReview } from "@/lib/api"
+import { getProductBySlug as getLocalProductBySlug, getProductReviews as getLocalProductReviews } from "@/data/products"
 import { ShoppingBag, ChevronLeft, Minus, Plus, Shield, Truck, Leaf, Star, SprayCan } from "lucide-react"
+
+async function getProductWithFallback(slug: string): Promise<ApiProduct | null> {
+  try {
+    const apiProduct = await getApiProductBySlug(slug)
+    if (apiProduct) return apiProduct
+  } catch {
+    // fallback to local data
+  }
+  const local = getLocalProductBySlug(slug)
+  if (!local) return null
+  return {
+    id: local.id,
+    slug: local.slug,
+    name: local.name,
+    name_en: null,
+    description: local.description,
+    description_en: null,
+    price: local.price,
+    stock: local.stock,
+    images: null,
+    category: local.category,
+    shopee_url: null,
+    shopee_item_id: null,
+    rating: local.rating,
+    sold_count: local.soldCount,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  }
+}
+
+async function getReviewsWithFallback(productId: string): Promise<ApiReview[]> {
+  try {
+    const apiReviews = await getApiProductReviews(productId)
+    if (apiReviews && apiReviews.length > 0) return apiReviews
+  } catch {
+    // fallback to local data
+  }
+  return getLocalProductReviews(productId).map((r) => ({
+    id: r.id,
+    product_id: r.productId,
+    author_name: r.authorName,
+    rating: r.rating,
+    comment: r.comment,
+    source: "local",
+    shopee_review_id: null,
+    created_at: r.date,
+  }))
+}
 
 export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params)
@@ -22,10 +71,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
   const tc = useTranslations("common")
 
   useEffect(() => {
-    getProductBySlug(slug).then((data) => {
+    getProductWithFallback(slug).then((data) => {
       setProduct(data)
       if (data) {
-        getProductReviews(data.id).then(setReviews)
+        getReviewsWithFallback(data.id).then(setReviews)
       }
       setLoading(false)
     }).catch(() => setLoading(false))

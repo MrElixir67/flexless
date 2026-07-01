@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react"
 import { useTranslations } from "next-intl"
 import { ProductCard } from "@/components/product/ProductCard"
-import { categories } from "@/data/products"
+import { categories, products as localProducts } from "@/data/products"
 import { Button } from "@/components/ui/button"
 import { Search, SlidersHorizontal } from "lucide-react"
 import { getProducts, type ApiProduct } from "@/lib/api"
@@ -13,17 +13,39 @@ export function ProductsGrid() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc" | "rating">("default")
   const [showFilters, setShowFilters] = useState(false)
-  const [products, setProducts] = useState<ApiProduct[]>([])
-  const [loading, setLoading] = useState(true)
+  const fallbackProducts: ApiProduct[] = localProducts.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    name_en: null,
+    description: p.description,
+    description_en: null,
+    price: p.price,
+    stock: p.stock,
+    images: null,
+    category: p.category,
+    shopee_url: null,
+    shopee_item_id: null,
+    rating: p.rating,
+    sold_count: p.soldCount,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  }))
+
+  const [products, setProducts] = useState<ApiProduct[]>(fallbackProducts)
+  const [loading, setLoading] = useState(false)
 
   const t = useTranslations("products")
   const tc = useTranslations("common")
 
   useEffect(() => {
     getProducts().then((data) => {
-      setProducts(data)
-      setLoading(false)
-    }).catch(() => setLoading(false))
+      if (data && data.length > 0) {
+        setProducts(data)
+      }
+    }).catch(() => {
+      // keep fallback products
+    })
   }, [])
 
   const filteredProducts = useMemo(() => {
