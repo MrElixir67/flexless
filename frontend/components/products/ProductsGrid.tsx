@@ -60,8 +60,8 @@ export function ProductsGrid() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-text-primary">{t("title")}</h1>
-        <p className="mt-1 text-text-muted">{t("desc")}</p>
+        <h1 className="text-2xl font-bold text-text-primary sm:text-3xl">{t("title")}</h1>
+        <p className="mt-1 text-sm text-text-muted sm:text-base">{t("desc")}</p>
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -133,10 +133,12 @@ export function ProductsGrid() {
               <p className="text-sm text-text-muted">{tc("tryAdjusting")}</p>
             </div>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            <div className="custom-scrollbar max-h-[60vh] overflow-y-auto pr-2 sm:max-h-[calc(100vh-20rem)] lg:max-h-[calc(100vh-18rem)]">
+              <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             </div>
           )}
         </div>

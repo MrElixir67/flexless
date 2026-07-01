@@ -29,8 +29,8 @@ export default function OrderDetailPage({ params }: { params: Promise<{ code: st
 
       <div className="space-y-6">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">{t("title")} {code}</h1>
-          <div className="mt-2 flex items-center gap-3">
+          <h1 className="text-xl font-bold text-text-primary sm:text-2xl">{t("title")} {code}</h1>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
             <span className="text-sm text-text-muted">25 Jun 2026</span>
             <Badge variant="default">{t("status")}: Delivered</Badge>
           </div>
@@ -123,8 +123,8 @@ export default function OrderDetailPage({ params }: { params: Promise<{ code: st
           </div>
         </div>
 
-        <div className="flex gap-3">
-          <Button variant="outline" className="gap-2"><Package className="h-4 w-4" /> {tc("trackPackage")}</Button>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button variant="outline" className="w-full gap-2 sm:w-auto"><Package className="h-4 w-4" /> {tc("trackPackage")}</Button>
         </div>
       </div>
     </div>

@@ -43,13 +43,13 @@ export default function OrdersPage() {
             <Link
               key={order.code}
               href={`/orders/${order.code}`}
-              className="flex items-center justify-between rounded-xl bg-primary-light p-5 transition-colors hover:bg-[#3d3d3d]"
+              className="flex flex-col gap-3 rounded-xl bg-primary-light p-5 transition-colors hover:bg-[#3d3d3d] sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="space-y-1">
                 <p className="font-medium text-text-primary">{order.code}</p>
                 <p className="text-sm text-text-muted">{order.date} · {order.items} {tc("items")}</p>
               </div>
-              <div className="text-right space-y-1">
+              <div className="flex items-center justify-between gap-4 sm:flex-col sm:items-end sm:gap-1">
                 <p className="font-medium text-text-primary">{formatPrice(order.total)}</p>
                 <Badge variant={order.status === "completed" ? "default" : "new"}>
                   {order.status}

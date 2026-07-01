@@ -38,7 +38,7 @@ export default function CheckoutPage() {
         <ChevronLeft className="h-4 w-4" /> {tc("backToCart")}
       </Link>
 
-      <h1 className="mb-8 text-3xl font-bold text-text-primary">{t("title")}</h1>
+      <h1 className="mb-6 text-2xl font-bold text-text-primary sm:mb-8 sm:text-3xl">{t("title")}</h1>
 
       <div className="grid gap-8 lg:grid-cols-3">
         <div className="space-y-8 lg:col-span-2">
@@ -62,7 +62,7 @@ export default function CheckoutPage() {
             <div className="space-y-4">
               <div>
                 <p className="mb-2 text-sm text-text-muted">{t("courier")}</p>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {couriers.map((c) => (
                     <button
                       key={c.id}

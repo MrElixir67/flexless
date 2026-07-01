@@ -19,7 +19,41 @@ export default function AdminOrdersPage() {
         <p className="text-sm text-text-muted">{orders.length} orders</p>
       </div>
 
-      <div className="overflow-hidden rounded-xl border border-border-dark">
+      {/* Mobile cards */}
+      <div className="space-y-3 sm:hidden">
+        {orders.map((order) => (
+          <div key={order.id} className="rounded-xl border border-border-dark bg-primary-light p-4 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="font-medium text-text-primary">{order.id}</p>
+              <Badge variant={order.status === "completed" ? "default" : "new"}>{order.status}</Badge>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-sm">
+              <div>
+                <p className="text-xs text-text-muted">Customer</p>
+                <p className="text-text-primary">{order.customer}</p>
+              </div>
+              <div>
+                <p className="text-xs text-text-muted">Date</p>
+                <p className="text-text-primary">{order.date}</p>
+              </div>
+              <div>
+                <p className="text-xs text-text-muted">Total</p>
+                <p className="font-medium text-text-primary">{formatPrice(order.total)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-text-muted">Items</p>
+                <p className="text-text-primary">{order.items}</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <button className="text-sm text-secondary hover:text-secondary-hover">Update</button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop table */}
+      <div className="hidden overflow-hidden rounded-xl border border-border-dark sm:block">
         <table className="w-full text-sm">
           <thead className="bg-primary-light">
             <tr>

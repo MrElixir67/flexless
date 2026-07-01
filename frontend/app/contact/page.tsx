@@ -9,7 +9,7 @@ import {
   MessageCircle,
   Send,
 } from "lucide-react"
-import { FaInstagram, FaTiktok, FaShopify, FaThreads, FaBagShopping } from "react-icons/fa6"
+import { FaInstagram, FaTiktok, FaThreads } from "react-icons/fa6"
 import { HiMapPin } from "react-icons/hi2"
 
 export default async function ContactPage() {
@@ -148,30 +148,30 @@ export default async function ContactPage() {
               {/* Social Media */}
               <div>
                 <h3 className="mb-3 text-sm font-semibold text-text-primary">{t("followUs")}</h3>
-                <div className="flex flex-wrap gap-1">
-                  <a href="https://www.tiktok.com/@flexlessofficial" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg border border-border-dark px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary">
+                <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+                  <a href="https://www.tiktok.com/@flexlessofficial" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-lg border border-border-dark px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary sm:px-4">
                     <FaTiktok className="h-4 w-4" />
                     TikTok
                   </a>
-                  <a href="https://www.instagram.com/flexless.id/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg border border-border-dark px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary">
+                  <a href="https://www.instagram.com/flexless.id/" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-lg border border-border-dark px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary sm:px-4">
                     <FaInstagram className="h-4 w-4" />
                     Instagram
                   </a>
-                  <a href="https://www.threads.com/@flexless.id" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg border border-border-dark px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary">
+                  <a href="https://www.threads.com/@flexless.id" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-lg border border-border-dark px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary sm:px-4">
                     <FaThreads className="h-4 w-4" />
                     Threads
                   </a>
-                  <a href="https://shopee.co.id/flexless_id" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg border border-border-dark px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary">
-                    <FaShopify className="h-4 w-4" />
+                  <a href="https://shopee.co.id/flexless_id" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-lg border border-border-dark px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary sm:px-4">
+                    <img src="/logo/shopee.svg" alt="Shopee" className="h-4 w-4" />
                     Shopee
                   </a>
-                  <a href="https://www.tokopedia.com/flexlessid" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg border border-border-dark px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary">
-                    <FaBagShopping className="h-4 w-4" />
+                  <a href="https://www.tokopedia.com/flexlessid" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-lg border border-border-dark px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary sm:px-4">
+                    <img src="/logo/tokopedia.svg" alt="Tokopedia" className="h-4 w-4" />
                     Tokopedia
                   </a>
-                  <a href="https://www.google.com/maps?q=Hype+Premium+Shoes+%26+Bag+Care,+Jl.+Pulau+Nias+No.2A,+Dauh+Puri+Klod,+Denpasar+Barat,+Denpasar+City,+Bali+80114&ftid=0x2dd24194b851b18d:0x7918904cef70b58&hl=en-ID&gl=id&entry=gps&lucs=,47071704,47069508&g_ep=CAISBjYuNjQuMxgAIMi8ByoSLDQ3MDcxNzA0LDQ3MDY5NTA4QgJJRA%3D%3D&skid=43479e0f-29f8-4681-9868-5b400effafe5&g_st=ic" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 rounded-lg border border-border-dark px-4 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary">
+                  <a href="https://www.google.com/maps?q=Hype+Premium+Shoes+%26+Bag+Care,+Jl.+Pulau+Nias+No.2A,+Dauh+Puri+Klod,+Denpasar+Barat,+Denpasar+City,+Bali+80114&ftid=0x2dd24194b851b18d:0x7918904cef70b58&hl=en-ID&gl=id&entry=gps&lucs=,47071704,47069508&g_ep=CAISBjYuNjQuMxgAIMi8ByoSLDQ3MDcxNzA0LDQ3MDY5NTA4QgJJRA%3D%3D&skid=43479e0f-29f8-4681-9868-5b400effafe5&g_st=ic" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-lg border border-border-dark px-3 py-2.5 text-sm text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary sm:px-4">
                     <HiMapPin className="h-4 w-4" />
-                    Google Maps
+                    Maps
                   </a>
                 </div>
               </div>
