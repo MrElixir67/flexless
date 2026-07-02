@@ -42,18 +42,18 @@ export function ProductCard({ product }: ProductCardProps) {
     <Link href={`/products/${product.slug}`} className="group block">
       <div className="overflow-hidden rounded-xl bg-primary-light transition-colors">
         <div className="relative aspect-square bg-gradient-to-br from-primary-light to-[#3d3d3d]">
-          <div className="flex h-full items-center justify-center p-8">
+          <div className="flex h-full items-center justify-center p-5 sm:p-8">
             <div className="text-center">
-              <div className="mx-auto mb-2 flex h-20 w-20 items-center justify-center rounded-full bg-secondary/20">
-                <Icon className="h-10 w-10 text-secondary" />
+              <div className="mx-auto mb-2 flex h-14 w-14 items-center justify-center rounded-full bg-secondary/20 sm:h-20 sm:w-20">
+                <Icon className="h-7 w-7 text-secondary sm:h-10 sm:w-10" />
               </div>
-              <p className="text-xs text-text-muted">{label}</p>
+              <p className="text-[10px] text-text-muted sm:text-xs">{label}</p>
             </div>
           </div>
         </div>
 
-        <div className="space-y-2 p-4">
-          <h3 className="font-medium text-text-primary line-clamp-1">
+        <div className="space-y-1.5 p-3 sm:space-y-2 sm:p-4">
+          <h3 className="text-sm font-medium text-text-primary line-clamp-1 sm:text-base">
             {product.name}
           </h3>
           <StarRating rating={product.rating} size="sm" showCount count={product.sold_count || product.reviewCount || 0} />

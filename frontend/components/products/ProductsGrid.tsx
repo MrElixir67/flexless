@@ -3,7 +3,7 @@
 import { useState, useMemo, useEffect } from "react"
 import { useTranslations } from "next-intl"
 import { ProductCard } from "@/components/product/ProductCard"
-import { categories } from "@/data/products"
+import { categories, products as localProducts } from "@/data/products"
 import { Button } from "@/components/ui/button"
 import { Search, SlidersHorizontal } from "lucide-react"
 import { getProducts, type ApiProduct } from "@/lib/api"
@@ -13,17 +13,39 @@ export function ProductsGrid() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
   const [sortBy, setSortBy] = useState<"default" | "price-asc" | "price-desc" | "rating">("default")
   const [showFilters, setShowFilters] = useState(false)
-  const [products, setProducts] = useState<ApiProduct[]>([])
-  const [loading, setLoading] = useState(true)
+  const fallbackProducts: ApiProduct[] = localProducts.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    name_en: null,
+    description: p.description,
+    description_en: null,
+    price: p.price,
+    stock: p.stock,
+    images: null,
+    category: p.category,
+    shopee_url: null,
+    shopee_item_id: null,
+    rating: p.rating,
+    sold_count: p.soldCount,
+    is_active: true,
+    created_at: new Date().toISOString(),
+  }))
+
+  const [products, setProducts] = useState<ApiProduct[]>(fallbackProducts)
+  const [loading, setLoading] = useState(false)
 
   const t = useTranslations("products")
   const tc = useTranslations("common")
 
   useEffect(() => {
     getProducts().then((data) => {
-      setProducts(data)
-      setLoading(false)
-    }).catch(() => setLoading(false))
+      if (data && data.length > 0) {
+        setProducts(data)
+      }
+    }).catch(() => {
+      // keep fallback products
+    })
   }, [])
 
   const filteredProducts = useMemo(() => {
@@ -60,8 +82,8 @@ export function ProductsGrid() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-text-primary">{t("title")}</h1>
-        <p className="mt-1 text-text-muted">{t("desc")}</p>
+        <h1 className="text-2xl font-bold text-text-primary sm:text-3xl">{t("title")}</h1>
+        <p className="mt-1 text-sm text-text-muted sm:text-base">{t("desc")}</p>
       </div>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -133,10 +155,12 @@ export function ProductsGrid() {
               <p className="text-sm text-text-muted">{tc("tryAdjusting")}</p>
             </div>
           ) : (
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {filteredProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            <div className="custom-scrollbar max-h-[60vh] overflow-y-auto pr-2 sm:max-h-[calc(100vh-20rem)] lg:max-h-[calc(100vh-18rem)]">
+              <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
+                {filteredProducts.map((product) => (
+                  <ProductCard key={product.id} product={product} />
+                ))}
+              </div>
             </div>
           )}
         </div>

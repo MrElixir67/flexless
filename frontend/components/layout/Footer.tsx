@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useTranslations } from "next-intl"
-import { FaInstagram, FaTiktok, FaShopify, FaThreads, FaBagShopping } from "react-icons/fa6"
+import { FaInstagram, FaTiktok, FaThreads } from "react-icons/fa6"
 import { HiMapPin } from "react-icons/hi2"
 
 export function Footer() {
@@ -45,7 +45,7 @@ export function Footer() {
           <div>
             <h3 className="mb-3 text-sm font-semibold text-text-primary">{t("followUs")}</h3>
             <p className="mb-3 text-sm text-text-muted">{t("followUsDesc")}</p>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-2">
               <a href="https://www.tiktok.com/@flexlessofficial" target="_blank" rel="noopener noreferrer" className="rounded-lg p-2.5 text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary" aria-label="TikTok">
                 <FaTiktok className="h-5 w-5" />
               </a>
@@ -56,10 +56,10 @@ export function Footer() {
                 <FaThreads className="h-5 w-5" />
               </a>
               <a href="https://shopee.co.id/flexless_id" target="_blank" rel="noopener noreferrer" className="rounded-lg p-2.5 text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary" aria-label="Shopee">
-                <FaShopify className="h-5 w-5" />
+                <img src="/logo/shopee.svg" alt="Shopee" className="h-5 w-5" />
               </a>
               <a href="https://www.tokopedia.com/flexlessid" target="_blank" rel="noopener noreferrer" className="rounded-lg p-2.5 text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary" aria-label="Tokopedia">
-                <FaBagShopping className="h-5 w-5" />
+                <img src="/logo/tokopedia.svg" alt="Tokopedia" className="h-5 w-5" />
               </a>
               <a href="https://www.google.com/maps?q=Hype+Premium+Shoes+%26+Bag+Care,+Jl.+Pulau+Nias+No.2A,+Dauh+Puri+Klod,+Denpasar+Barat,+Denpasar+City,+Bali+80114&ftid=0x2dd24194b851b18d:0x7918904cef70b58&hl=en-ID&gl=id&entry=gps&lucs=,47071704,47069508&g_ep=CAISBjYuNjQuMxgAIMi8ByoSLDQ3MDcxNzA0LDQ3MDY5NTA4QgJJRA%3D%3D&skid=43479e0f-29f8-4681-9868-5b400effafe5&g_st=ic" target="_blank" rel="noopener noreferrer" className="rounded-lg p-2.5 text-text-muted transition-colors hover:bg-primary-light hover:text-text-primary" aria-label="Google Maps">
                 <HiMapPin className="h-5 w-5" />

@@ -6,6 +6,8 @@ import { Footer } from "@/components/layout/Footer"
 import { getMessages, getLocale } from "next-intl/server"
 import { LocaleProvider } from "@/components/providers/locale-provider"
 
+export const dynamic = "force-dynamic"
+
 const inter = Inter({
   subsets: ["latin"],
   display: "swap",
@@ -14,6 +16,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Flexless — Premium Shoe Care from Bali",
   description: "Premium shoe cleaning and care products made in Bali. Treat your shoes with the best.",
+  other: {
+    google: "notranslate",
+  },
 }
 
 export default async function RootLayout({

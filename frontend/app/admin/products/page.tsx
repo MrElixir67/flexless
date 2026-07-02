@@ -33,8 +33,52 @@ export default function AdminProductsPage() {
           <div className="h-8 w-8 animate-spin rounded-full border-2 border-secondary border-t-transparent" />
         </div>
       ) : (
-        <div className="overflow-hidden rounded-xl border border-border-dark">
-          <table className="w-full text-sm">
+        <>
+          {/* Mobile cards */}
+          <div className="space-y-3 sm:hidden">
+            {products.map((product) => (
+              <div key={product.id} className="rounded-xl border border-border-dark bg-primary-light p-4 space-y-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-secondary/10">
+                    {product.category === "cleaner" ? (
+                      <SprayCan className="h-5 w-5 text-secondary" />
+                    ) : product.category === "treatment" ? (
+                      <Droplets className="h-5 w-5 text-secondary" />
+                    ) : product.category === "kit" ? (
+                      <PackageIcon className="h-5 w-5 text-secondary" />
+                    ) : (
+                      <Brush className="h-5 w-5 text-secondary" />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="font-medium text-text-primary truncate">{product.name}</p>
+                    <p className="text-xs text-text-muted capitalize">{product.category}</p>
+                  </div>
+                  <button className="p-2 text-text-muted hover:text-secondary">
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-sm">
+                  <div>
+                    <p className="text-xs text-text-muted">Price</p>
+                    <p className="font-medium text-text-primary">{formatPrice(product.price)}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-text-muted">Stock</p>
+                    <p className={product.stock > 0 ? "text-green-400" : "text-red-400"}>{product.stock}</p>
+                  </div>
+                  <div>
+                    <p className="text-xs text-text-muted">Rating</p>
+                    <p className="text-text-muted">{product.rating}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Desktop table */}
+          <div className="hidden overflow-hidden rounded-xl border border-border-dark sm:block">
+            <table className="w-full text-sm">
             <thead className="bg-primary-light">
               <tr>
                 <th className="px-4 py-3 text-left font-medium text-text-muted">Product</th>
@@ -80,6 +124,7 @@ export default function AdminProductsPage() {
             </tbody>
           </table>
         </div>
+        </>
       )}
     </div>
   )

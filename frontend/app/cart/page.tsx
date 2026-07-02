@@ -34,7 +34,7 @@ export default function CartPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-      <h1 className="mb-8 text-3xl font-bold text-text-primary">{t("title")}</h1>
+      <h1 className="mb-6 text-2xl font-bold text-text-primary sm:mb-8 sm:text-3xl">{t("title")}</h1>
 
       {cartItems.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-20">
@@ -49,31 +49,37 @@ export default function CartPage() {
         <div className="grid gap-8 lg:grid-cols-3">
           <div className="space-y-4 lg:col-span-2">
             {cartItems.map((item) => (
-              <div key={item.id} className="flex items-center gap-4 rounded-xl bg-primary-light p-4">
-                <div className="flex h-20 w-20 items-center justify-center rounded-lg bg-secondary/10">
-                  <item.icon className="h-10 w-10 text-secondary" />
+              <div key={item.id} className="flex flex-col gap-4 rounded-xl bg-primary-light p-4 sm:flex-row sm:items-center">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-20 w-20 shrink-0 items-center justify-center rounded-lg bg-secondary/10">
+                    <item.icon className="h-10 w-10 text-secondary" />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-medium text-text-primary truncate">{item.name}</h3>
+                    <p className="mt-1 text-sm font-medium text-secondary">{formatPrice(item.price)}</p>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-text-primary truncate">{item.name}</h3>
-                  <p className="mt-1 text-sm text-secondary font-medium">{formatPrice(item.price)}</p>
+                <div className="flex items-center justify-between gap-4 sm:ml-auto">
+                  <div className="flex items-center gap-1">
+                    <button className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-dark bg-primary text-text-primary hover:bg-[#3d3d3d]">
+                      <Minus className="h-3 w-3" />
+                    </button>
+                    <span className="flex h-8 w-10 items-center justify-center text-sm font-medium text-text-primary">
+                      {item.quantity}
+                    </span>
+                    <button className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-dark bg-primary text-text-primary hover:bg-[#3d3d3d]">
+                      <Plus className="h-3 w-3" />
+                    </button>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <p className="text-right font-medium text-text-primary">
+                      {formatPrice(item.price * item.quantity)}
+                    </p>
+                    <button className="p-2 text-text-muted hover:text-red-400">
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-1">
-                  <button className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-dark bg-primary text-text-primary hover:bg-[#3d3d3d]">
-                    <Minus className="h-3 w-3" />
-                  </button>
-                  <span className="flex h-8 w-10 items-center justify-center text-sm font-medium text-text-primary">
-                    {item.quantity}
-                  </span>
-                  <button className="flex h-8 w-8 items-center justify-center rounded-lg border border-border-dark bg-primary text-text-primary hover:bg-[#3d3d3d]">
-                    <Plus className="h-3 w-3" />
-                  </button>
-                </div>
-                <p className="w-20 text-right font-medium text-text-primary">
-                  {formatPrice(item.price * item.quantity)}
-                </p>
-                <button className="p-2 text-text-muted hover:text-red-400">
-                  <Trash2 className="h-4 w-4" />
-                </button>
               </div>
             ))}
           </div>

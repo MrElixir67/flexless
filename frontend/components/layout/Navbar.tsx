@@ -1,10 +1,9 @@
 "use client"
 
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useLocale, useTranslations } from "next-intl"
-import { Menu, Search, ShoppingBag, X } from "lucide-react"
+import { Globe, Menu, ShoppingBag, X } from "lucide-react"
 
 
 const navLinks = [
@@ -15,14 +14,23 @@ const navLinks = [
 
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [animatingLocale, setAnimatingLocale] = useState<string | null>(null)
   const locale = useLocale()
   const t = useTranslations("nav")
-  const router = useRouter()
+
+  const displayLocale = animatingLocale ?? locale
 
   const switchLocale = (newLocale: string) => {
-    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000`
-    router.refresh()
+    if (animatingLocale || newLocale === locale) return
+    setAnimatingLocale(newLocale)
+    document.cookie = `NEXT_LOCALE=${newLocale};path=/;max-age=31536000;SameSite=Lax`
+    setTimeout(() => {
+      window.location.reload()
+    }, 300)
   }
+
+  const isEn = displayLocale === "en"
+  const isId = displayLocale === "id"
 
   return (
     <header className="sticky top-0 z-50 border-b border-border-dark bg-primary">
@@ -46,30 +54,40 @@ export function Navbar() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             type="button"
-            onClick={() => switchLocale(locale === "id" ? "en" : "id")}
-            className="relative hidden sm:block h-7 w-[60px] rounded-md border border-border-dark bg-primary-light overflow-hidden"
+            onClick={() => switchLocale(isId ? "en" : "id")}
+            disabled={!!animatingLocale}
+            aria-label={isId ? t("switchToEnglish") : t("switchToIndonesian")}
+            className="group relative hidden h-8 w-16 items-center rounded-full border border-border-dark bg-primary-light p-0.5 shadow-inner transition-colors hover:border-secondary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-primary sm:flex"
+            suppressHydrationWarning
           >
             <span
               aria-hidden
-              className={`pointer-events-none absolute top-0.5 h-[24px] w-[27px] rounded bg-secondary border border-secondary/30 transition-all duration-200 ease-out ${
-                locale === "en" ? "left-[calc(50%+1px)]" : "left-0.5"
+              suppressHydrationWarning
+              className={`pointer-events-none absolute left-0.5 top-0.5 h-7 w-7 rounded-full bg-secondary shadow-md transition-transform duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] ${
+                isEn ? "translate-x-8" : "translate-x-0"
               }`}
             />
-            <span aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-between px-[10px] z-10">
-              <span className={`pointer-events-none text-[11px] font-semibold ${locale === "id" ? "text-primary" : "text-text-muted"}`}>
+            <span aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-between px-[9px]">
+              <span
+                suppressHydrationWarning
+                className={`pointer-events-none text-[10px] font-bold uppercase tracking-wide transition-colors duration-200 ${
+                  isId ? "text-primary" : "text-text-muted group-hover:text-text-primary/60"
+                }`}
+              >
                 ID
               </span>
-              <span className={`pointer-events-none text-[11px] font-semibold ${locale === "en" ? "text-primary" : "text-text-muted"}`}>
+              <span
+                suppressHydrationWarning
+                className={`pointer-events-none text-[10px] font-bold uppercase tracking-wide transition-colors duration-200 ${
+                  isEn ? "text-primary" : "text-text-muted group-hover:text-text-primary/60"
+                }`}
+              >
                 EN
               </span>
             </span>
-          </button>
-
-          <button className="rounded-lg p-2 text-text-primary/80 transition-colors hover:text-text-primary">
-            <Search className="h-5 w-5" />
           </button>
 
           <Link
@@ -92,24 +110,38 @@ export function Navbar() {
       </div>
 
       {mobileOpen && (
-        <div className="border-t border-border-dark bg-primary px-4 pb-4 md:hidden">
-          <nav className="flex flex-col gap-2 pt-4">
+        <div className="absolute inset-x-0 top-full border-b border-border-dark bg-primary px-4 pb-4 shadow-lg md:hidden">
+          <nav className="flex flex-col gap-1 pt-2">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
-                className="rounded-lg px-3 py-2 text-sm font-medium text-text-primary/80 transition-colors hover:bg-primary-light"
+                className="rounded-lg px-3 py-3 text-base font-medium text-text-primary/80 transition-colors hover:bg-primary-light"
               >
                 {t(link.key)}
               </Link>
             ))}
-            <hr className="border-border-dark" />
+            <hr className="my-2 border-border-dark" />
             <button
               onClick={() => switchLocale(locale === "id" ? "en" : "id")}
-              className="rounded-lg px-3 py-2 text-left text-sm font-medium text-text-primary/80"
+              disabled={!!animatingLocale}
+              className="flex items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-medium text-text-primary/80 transition-colors hover:bg-primary-light"
             >
-              {locale === "id" ? t("switchToEnglish") : t("switchToIndonesian")}
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-light text-text-primary">
+                <Globe className="h-4 w-4" />
+              </span>
+              <span className="flex flex-col">
+                <span className="text-xs text-text-muted">
+                  {locale === "id" ? "Bahasa saat ini" : "Current language"}
+                </span>
+                <span className="font-semibold text-text-primary">
+                  {locale === "id" ? "Indonesia" : "English"}
+                </span>
+              </span>
+              <span className="ml-auto text-xs text-secondary">
+                {locale === "id" ? t("switchToEnglish") : t("switchToIndonesian")}
+              </span>
             </button>
           </nav>
         </div>
