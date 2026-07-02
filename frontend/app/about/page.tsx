@@ -17,6 +17,9 @@ import {
   Globe,
 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
+import { FaInstagram, FaTiktok, FaThreads } from "react-icons/fa6"
+import { HiMapPin } from "react-icons/hi2"
 
 export default async function AboutPage() {
   const t = await getTranslations("about")
@@ -248,6 +251,95 @@ export default async function AboutPage() {
                 <p className="mt-1 text-sm text-text-muted">{t("mapPlaceholder")}</p>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Follow Us / Social Media & Marketplace */}
+      <section className="border-y border-border-dark bg-primary-light py-16 sm:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center">
+            <h2 className="text-2xl font-bold text-text-primary sm:text-3xl">Ikuti Kami</h2>
+            <p className="mx-auto mt-3 max-w-xl text-text-muted">Stay connected for updates, tips, and exclusive offers.</p>
+          </div>
+          <div className="grid grid-cols-3 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
+            {/* TikTok */}
+            <a
+              href="https://www.tiktok.com/@flexlessofficial"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center gap-3 rounded-xl border border-border-dark bg-primary p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-primary-light"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 transition-colors group-hover:bg-secondary/20">
+                <FaTiktok className="h-5 w-5 text-secondary" />
+              </div>
+              <span className="text-xs font-medium text-text-muted group-hover:text-text-primary sm:text-sm">TikTok</span>
+            </a>
+
+            {/* Instagram */}
+            <a
+              href="https://www.instagram.com/flexless.id/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center gap-3 rounded-xl border border-border-dark bg-primary p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-primary-light"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 transition-colors group-hover:bg-secondary/20">
+                <FaInstagram className="h-5 w-5 text-secondary" />
+              </div>
+              <span className="text-xs font-medium text-text-muted group-hover:text-text-primary sm:text-sm">Instagram</span>
+            </a>
+
+            {/* Threads */}
+            <a
+              href="https://www.threads.com/@flexless.id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center gap-3 rounded-xl border border-border-dark bg-primary p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-primary-light"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 transition-colors group-hover:bg-secondary/20">
+                <FaThreads className="h-5 w-5 text-secondary" />
+              </div>
+              <span className="text-xs font-medium text-text-muted group-hover:text-text-primary sm:text-sm">Threads</span>
+            </a>
+
+            {/* Shopee */}
+            <a
+              href="https://shopee.co.id/flexless_id"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center gap-3 rounded-xl border border-border-dark bg-primary p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-primary-light"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 transition-colors group-hover:bg-secondary/20">
+                <Image src="/logo/shopee.svg" alt="Shopee" width={20} height={20} />
+              </div>
+              <span className="text-xs font-medium text-text-muted group-hover:text-text-primary sm:text-sm">Shopee</span>
+            </a>
+
+            {/* Tokopedia */}
+            <a
+              href="https://www.tokopedia.com/flexlessid"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center gap-3 rounded-xl border border-border-dark bg-primary p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-primary-light"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 transition-colors group-hover:bg-secondary/20">
+                <Image src="/logo/tokopedia.svg" alt="Tokopedia" width={20} height={20} />
+              </div>
+              <span className="text-xs font-medium text-text-muted group-hover:text-text-primary sm:text-sm">Tokopedia</span>
+            </a>
+
+            {/* Google Maps */}
+            <a
+              href="https://www.google.com/maps?q=Hype+Premium+Shoes+%26+Bag+Care,+Jl.+Pulau+Nias+No.2A,+Dauh+Puri+Klod,+Denpasar+Barat,+Denpasar+City,+Bali+80114&ftid=0x2dd24194b851b18d:0x7918904cef70b58&hl=en-ID&gl=id&entry=gps&lucs=,47071704,47069508&g_ep=CAISBjYuNjQuMxgAIMi8ByoSLDQ3MDcxNzA0LDQ3MDY5NTA4QgJJRA%3D%3D&skid=43479e0f-29f8-4681-9868-5b400effafe5&g_st=ic"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex flex-col items-center gap-3 rounded-xl border border-border-dark bg-primary p-5 text-center transition-all duration-300 hover:-translate-y-1 hover:border-secondary/30 hover:bg-primary-light"
+            >
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/10 transition-colors group-hover:bg-secondary/20">
+                <HiMapPin className="h-5 w-5 text-secondary" />
+              </div>
+              <span className="text-xs font-medium text-text-muted group-hover:text-text-primary sm:text-sm">Maps</span>
+            </a>
           </div>
         </div>
       </section>
